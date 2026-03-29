@@ -1,6 +1,7 @@
 class Issue < ApplicationRecord
   belongs_to :column
   belongs_to :assignee, class_name: "User", foreign_key: "assignee_id", optional: true
+  has_many :comments, dependent: :destroy
 
   PRIORITIES = %w[low medium high critical].freeze
 
