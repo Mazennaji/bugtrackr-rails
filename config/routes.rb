@@ -11,6 +11,12 @@ Rails.application.routes.draw do
           member do
             get :board
           end
+          resources :columns, only: [:index, :create, :update, :destroy]
+          resources :issues do
+            member do
+              patch :move
+            end
+          end
         end
       end
     end

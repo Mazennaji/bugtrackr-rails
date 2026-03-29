@@ -4,4 +4,8 @@ class Project < ApplicationRecord
   has_many :issues, through: :columns
 
   validates :name, presence: true
+
+  def board
+    columns.includes(:issues)
+  end
 end

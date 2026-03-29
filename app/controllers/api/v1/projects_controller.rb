@@ -1,6 +1,6 @@
 class Api::V1::ProjectsController < ApplicationController
   before_action :set_team
-  before_action :set_project, only: [:show, :update, :destroy]
+  before_action :set_project, only: [:show, :update, :destroy, :board]
 
   def index
     render json: @team.projects
@@ -23,6 +23,11 @@ class Api::V1::ProjectsController < ApplicationController
   def destroy
     @project.destroy
     render json: { message: "Project deleted" }
+  end
+
+  def board
+    columns = @project.columns.includes(:issues)
+    render json: columns.as_json(include: :issues)
   end
 
   private
