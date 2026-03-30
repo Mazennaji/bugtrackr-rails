@@ -3,7 +3,7 @@ class Api::V1::IssuesController < ApplicationController
   before_action :set_issue, only: [:show, :update, :destroy, :move]
 
   def index
-    issues = @project.issues
+    issues = @project.issues.ransack(params[:q]).result
     render json: issues
   end
 

@@ -11,12 +11,11 @@ class Issue < ApplicationRecord
 
   default_scope { order(:created_at) }
 
-  after_update :notify_assignee, if: :saved_change_to_assignee_id?
+  def self.ransackable_attributes(auth_object = nil)
+    %w[title description priority assignee_id column_id due_date created_at]
+  end
 
-  private
-
-  def notify_assignee
-    return unless assignee.present?
-    NotifyAssigneeJob.perform_later(self.id)
+  def self.ransackable_associations(auth_object = nil)
+    %w[column assignee comments]
   end
 end
