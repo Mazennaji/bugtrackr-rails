@@ -5,6 +5,7 @@ class User < ApplicationRecord
   has_many :teams, through: :team_members
   has_many :owned_teams, class_name: "Team", foreign_key: "owner_id"
   has_many :comments, dependent: :destroy
+  has_many :notifications, dependent: :destroy
 
   validates :email, presence: true, uniqueness: { case_sensitive: false }
   validates :name, presence: true

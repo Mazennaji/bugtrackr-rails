@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_29_185427) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_30_080104) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -73,6 +73,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_29_185427) do
     t.index ["column_id"], name: "index_issues_on_column_id"
   end
 
+  create_table "notifications", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "notifiable_id"
+    t.string "notifiable_type"
+    t.datetime "read_at"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_notifications_on_user_id"
+  end
+
   create_table "projects", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.text "description"
@@ -117,6 +127,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_29_185427) do
   add_foreign_key "comments", "issues"
   add_foreign_key "comments", "users"
   add_foreign_key "issues", "columns"
+  add_foreign_key "notifications", "users"
   add_foreign_key "projects", "teams"
   add_foreign_key "team_members", "teams"
   add_foreign_key "team_members", "users"

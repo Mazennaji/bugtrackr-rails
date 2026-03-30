@@ -5,6 +5,16 @@ Rails.application.routes.draw do
       post "auth/login",    to: "auth#login"
       post "auth/refresh",  to: "auth#refresh"
 
+      resources :notifications, only: [:index] do
+        collection do
+          get  :unread
+          patch :mark_all_read
+        end
+        member do
+          patch :mark_read
+        end
+      end
+
       resources :teams do
         resources :team_members, only: [:index, :create, :update, :destroy]
         resources :projects do
