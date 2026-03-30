@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body { font-family: Arial, sans-serif; color: #333; }
+      .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+      .header { background: #1a1a2e; color: white; padding: 20px; border-radius: 8px 8px 0 0; }
+      .body { background: #f9f9f9; padding: 20px; border-radius: 0 0 8px 8px; }
+      .badge { display: inline-block; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+      .high { background: #ffe0e0; color: #cc0000; }
+      .medium { background: #fff3cd; color: #856404; }
+      .low { background: #d4edda; color: #155724; }
+      .btn { display: inline-block; padding: 10px 20px; background: #4CAF50; color: white; text-decoration: none; border-radius: 5px; margin-top: 15px; }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h2>BugTrackr</h2>
+        <p>You have been assigned to an issue</p>
+      </div>
+      <div class="body">
+        <p>Hi <strong><%= @user.name %></strong>,</p>
+        <p>You have been assigned to the following issue in <strong><%= @team.name %></strong>:</p>
+
+        <h3><%= @issue.title %></h3>
+
+        <p>
+          <span class="badge <%= @issue.priority %>">
+            <%= @issue.priority&.upcase %>
+          </span>
+        </p>
+
+        <% if @issue.description.present? %>
+          <p><%= @issue.description %></p>
+        <% end %>
+
+        <% if @issue.due_date.present? %>
+          <p><strong>Due:</strong> <%= @issue.due_date.strftime("%B %d, %Y") %></p>
+        <% end %>
+
+        <p>Project: <strong><%= @project.name %></strong></p>
+
+        <p style="margin-top: 20px; color: #999; font-size: 12px;">
+          You are receiving this email because you were assigned to this issue on BugTrackr.
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

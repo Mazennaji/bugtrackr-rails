@@ -19,7 +19,20 @@ class Api::V1::IssuesController < ApplicationController
   end
 
   def update
+    previous_assignee_id = @issue.assignee_id
+    Rails.logger.info "=== PREVIOUS ASSIGNEE: #{previous_assignee_id}"
+    Rails.logger.info "=== ISSUE PARAMS: #{issue_params.inspect}"
+  
     @issue.update!(issue_params)
+  
+    Rails.logger.info "=== NEW ASSIGNEE: #{@issue.assignee_id}"
+    Rails.logger.info "=== CHANGED?: #{@issue.assignee_id != previous_assignee_id}"
+
+    if @issue.assignee_id != previous_assignee_id && @issue.assignee.present?
+      Rails.logger.info "=== FIRING JOB"
+      NotifyAssigneeJob.perform_later(@issue.id)
+    end
+
     broadcast_board(@project)
     render json: @issue
   end
@@ -49,6 +62,8 @@ class Api::V1::IssuesController < ApplicationController
   end
 
   def issue_params
+    params.require(:issue).permit(:title, :description, :priority, :due_date, :assignee_id, :column_id)
+  rescue ActionController::ParameterMissing
     params.permit(:title, :description, :priority, :due_date, :assignee_id, :column_id)
   end
 

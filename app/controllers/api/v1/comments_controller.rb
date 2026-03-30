@@ -11,6 +11,8 @@ class Api::V1::CommentsController < ApplicationController
       body: params[:body],
       user: current_user
     )
+
+    notify_assignee_of_comment(comment)
     render json: comment, status: :created
   end
 
@@ -30,5 +32,12 @@ class Api::V1::CommentsController < ApplicationController
 
   def set_comment
     @comment = @issue.comments.find(params[:id])
+  end
+
+  def notify_assignee_of_comment(comment)
+    return unless @issue.assignee.present?
+    return if @issue.assignee == current_user
+
+    NotificationMailer.comment_added(comment, @issue.assignee).deliver_later
   end
 end

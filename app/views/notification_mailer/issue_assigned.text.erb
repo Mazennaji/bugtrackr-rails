@@ -1,0 +1,15 @@
+Hi <%= @user.name %>,
+
+You have been assigned to the following issue in <%= @team.name %>:
+
+Title: <%= @issue.title %>
+Priority: <%= @issue.priority&.upcase %>
+<% if @issue.description.present? %>
+Description: <%= @issue.description %>
+<% end %>
+<% if @issue.due_date.present? %>
+Due: <%= @issue.due_date.strftime("%B %d, %Y") %>
+<% end %>
+Project: <%= @project.name %>
+
+You are receiving this email because you were assigned to this issue on BugTrackr.

@@ -10,5 +10,7 @@ class NotifyAssigneeJob < ApplicationJob
       notifiable: issue,
       read_at: nil
     )
+
+    NotificationMailer.issue_assigned(issue, issue.assignee).deliver_now
   end
 end
