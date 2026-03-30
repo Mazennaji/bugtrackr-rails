@@ -13,6 +13,9 @@ class User < ApplicationRecord
 
   before_save :downcase_email
 
+  scope :active, -> { where(banned: false) }
+  scope :admins, -> { where(admin: true) }
+
   private
 
   def downcase_email
