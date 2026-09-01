@@ -29,7 +29,7 @@ gem "rswag-specs", group: :test
 
 group :development, :test do
   gem "rspec-rails"
-  gem "debug", platforms: %i[mri windows], require: "debug/prelude"
+  gem "debug", ">= 1.11", platforms: %i[mri windows], require: false
 end
 
 group :tools do
